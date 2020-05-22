@@ -4,6 +4,16 @@
         header('Location:login.php');
         exit;
     }
+
+    //PDOを使ってDBに接続
+    $dbh = new PDO('mysql:host=localhost;dbname=sample_1_6_db', 'root', 'root');
+    //エラーがある場合に表示させる
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+    //select文作成
+    $stmt = $dbh->prepare('SELECT * FROM contacts');
+    $stmt->execute();
+    //結果を$contactsに格納
+    $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -24,6 +34,32 @@
         <main>
             <section>
                 <h2>管理画面トップページ</h2>
+                <div class="list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>名前</th>
+                            <th>メールアドレス</th>
+                            <th>性別</th>
+                            <th>お問い合わせ内容</th>
+                            <th>受付日時</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($contacts as $contact): ?>
+                        <tr>
+                            <td><?php echo $contact['id']; ?></td>
+                            <td><?php echo $contact['name']; ?></td>
+                            <td><?php echo $contact['email']; ?></td>
+                            <td><?php echo $contact['gender']; ?></td>
+                            <td><?php echo $contact['message']; ?></td>
+                            <td><?php echo $contact['created']; ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                </div>
             </section>
         </main>
         <footer>
