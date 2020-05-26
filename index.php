@@ -35,6 +35,9 @@
             <section>
                 <h2>管理画面トップページ</h2>
                 <div class="list">
+                    <div class="list-box">
+                        <a href="create.php"><button class="btn btn-primary">新規作成</button></a>
+                    </div>
                 <table>
                     <thead>
                         <tr>
