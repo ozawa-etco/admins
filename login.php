@@ -1,6 +1,6 @@
 <?php
-    if (isset($_POST['name']) ? $name = htmlspecialchars($_POST['name'], ENT_QUOTES, 'utf-8') : $name = '');
-    if (isset($_POST['password']) ? $password = htmlspecialchars($_POST['password'], ENT_QUOTES, 'utf-8') : $password = '');
+    $name = isset($_POST['name']) ? htmlspecialchars($_POST['name'], ENT_QUOTES, 'utf-8') : '';
+    $password = isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'utf-8') : '';
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -6,7 +6,7 @@
         exit;
     }
 
-    if (isset($_GET['id']) ? $id = htmlspecialchars($_GET['id'], ENT_QUOTES, 'utf-8') : $id = '');
+    $id = isset($_GET['id']) ? htmlspecialchars($_GET['id'], ENT_QUOTES, 'utf-8') : '';
 
     //DBへのINSERT
     //PDOを使ってDBに接続
@@ -64,18 +64,22 @@
                         </tr>
                         <tr>
                             <th>処理</th>
-                                <td>
-                                    <?php if ($contact['processed'] == 0): ?>
-                                        未処理
-                                    <?php else: ?>
-                                        処理済
-                                    <?php endif; ?>
-                                </td>
+                            <td>
+                                <?php if ($contact['processed'] == 0): ?>
+                                    未処理
+                                <?php else: ?>
+                                    処理済
+                                <?php endif; ?>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="2">
                                 <a href="index.php"><button class="btn btn-primary">一覧へ戻る</button></a>
                                 <a href="edit.php?id=<?php echo $contact['id']; ?>"><button class="btn btn-info">編集</button></a>
+                                <button class="delete btn btn-danger" data-id="<?php echo $contact['id']; ?>">削除</button>
+                                <form method="POST" action="delete.php" id="delete_form_<?php echo $contact['id']; ?>">
+                                    <input type="hidden" value="<?php echo $contact['id']; ?>" name="id">
+                                </form>
                             </td>
                         </tr>
                     </tbody>
@@ -86,5 +90,18 @@
         <footer>
             &copy; 20xx Sample corporation.
         </footer>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+            $(".delete").click(function(){
+                var id = this.dataset.id;
+                if(confirm("ID:"+id+"番のお問い合わせを本当に削除していいですか？")){
+                    //OK
+                    $("#delete_form_"+id).submit();
+                }else{
+                    //キャンセル
+                    return false;
+                }
+            })
+        </script>
     </body>
 </html> 

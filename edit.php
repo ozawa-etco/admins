@@ -5,7 +5,7 @@
         exit;
     }
 
-    if (isset($_GET['id']) ? $id = htmlspecialchars($_GET['id'], ENT_QUOTES, 'utf-8') : $id = '');
+    $id = isset($_GET['id']) ? htmlspecialchars($_GET['id'], ENT_QUOTES, 'utf-8') : '';
 
     //PDOを使ってDBに接続
     $dbh = new PDO('mysql:host=localhost;dbname=sample_1_6_db', 'root', 'root');

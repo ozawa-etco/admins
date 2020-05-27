@@ -83,6 +83,21 @@ textarea{
     color: white;
 }
 
+
+.btn-danger{
+    padding: 5px;
+    text-decoration: none;
+    color: red;
+    margin:3px;
+    border:solid 2px red;
+    border-radius: 2px;
+}
+
+.btn-danger:hover {
+    background: red;
+    color: white;
+}
+
 .login{
     text-align:center;
 }
