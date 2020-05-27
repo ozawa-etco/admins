@@ -60,7 +60,23 @@
                             <th>受付日時</th><td><?php echo $contact['created']; ?></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><a href="index.php"><button class="btn btn-primary">一覧へ戻る</button></a></td>
+                            <th>最終更新日時</th><td><?php echo $contact['updated']; ?></td>
+                        </tr>
+                        <tr>
+                            <th>処理</th>
+                                <td>
+                                    <?php if ($contact['processed'] == 0): ?>
+                                        未処理
+                                    <?php else: ?>
+                                        処理済
+                                    <?php endif; ?>
+                                </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <a href="index.php"><button class="btn btn-primary">一覧へ戻る</button></a>
+                                <a href="edit.php?id=<?php echo $contact['id']; ?>"><button class="btn btn-info">編集</button></a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

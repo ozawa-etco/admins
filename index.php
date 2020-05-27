@@ -45,6 +45,7 @@
                             <th>名前</th>
                             <th>メールアドレス</th>
                             <th>受付日時</th>
+                            <th>処理状況</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,6 +55,7 @@
                             <td><?php echo $contact['name']; ?></td>
                             <td><?php echo $contact['email']; ?></td>
                             <td><?php echo $contact['created']; ?></td>
+                            <td><?php if ($contact['processed'] == 0): ?><span style="color:red">未処理</span><?php else: ?><span style="color:green">処理済</span><?php endif; ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
