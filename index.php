@@ -44,19 +44,15 @@
                             <th>id</th>
                             <th>名前</th>
                             <th>メールアドレス</th>
-                            <th>性別</th>
-                            <th>お問い合わせ内容</th>
                             <th>受付日時</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($contacts as $contact): ?>
                         <tr>
-                            <td><?php echo $contact['id']; ?></td>
+                            <td><a href="show.php?id=<?php echo $contact['id']; ?>"><?php echo $contact['id']; ?></td>
                             <td><?php echo $contact['name']; ?></td>
                             <td><?php echo $contact['email']; ?></td>
-                            <td><?php echo $contact['gender']; ?></td>
-                            <td><?php echo $contact['message']; ?></td>
                             <td><?php echo $contact['created']; ?></td>
                         </tr>
                         <?php endforeach; ?>
