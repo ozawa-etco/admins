@@ -44,6 +44,7 @@
                 <div class="list">
                     <div class="list-box">
                         <a href="create.php"><button class="btn btn-primary">新規作成</button></a>
+                        <a href="download.php?keyword=<?php echo $keyword; ?>"><button class="btn btn-primary">CSVダウンロード</button></a>
                         <form class="search" action="index.php" method="GET">
                             <input type="text" name="keyword" placeholder="名前検索" value="<?php echo $keyword; ?>">
                             <button type="submit" class="btn btn-primary" >検索</button>
