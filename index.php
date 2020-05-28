@@ -5,12 +5,19 @@
         exit;
     }
 
+    $keyword = isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword'], ENT_QUOTES, 'utf-8') : '';
+
     //PDOを使ってDBに接続
     $dbh = new PDO('mysql:host=localhost;dbname=sample_1_6_db', 'root', 'root');
     //エラーがある場合に表示させる
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
     //select文作成
-    $stmt = $dbh->prepare('SELECT * FROM contacts');
+    if ($keyword == '') {
+        $stmt = $dbh->prepare('SELECT * FROM contacts');
+    } else {
+        $stmt = $dbh->prepare('SELECT * FROM contacts WHERE name like :keyword');
+        $stmt->bindValue(':keyword', '%'.$keyword.'%');
+    }
     $stmt->execute();
     //結果を$contactsに格納
     $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -37,6 +44,10 @@
                 <div class="list">
                     <div class="list-box">
                         <a href="create.php"><button class="btn btn-primary">新規作成</button></a>
+                        <form class="search" action="index.php" method="GET">
+                            <input type="text" name="keyword" placeholder="名前検索" value="<?php echo $keyword; ?>">
+                            <button type="submit" class="btn btn-primary" >検索</button>
+                        </form>
                     </div>
                 <table>
                     <thead>

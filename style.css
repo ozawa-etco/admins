@@ -195,3 +195,13 @@ input.error {
     color:red;
 }
 
+
+/*検索窓*/
+.search input {
+    width: 30%;
+    padding: 4px;
+}
+
+.search button {
+    padding: 5px 10px;
+}
