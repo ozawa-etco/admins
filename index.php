@@ -11,16 +11,42 @@
     $dbh = new PDO('mysql:host=localhost;dbname=sample_1_6_db', 'root', 'root');
     //エラーがある場合に表示させる
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-    //select文作成
-    if ($keyword == '') {
-        $stmt = $dbh->prepare('SELECT * FROM contacts');
+
+    //ページング設定///////////////////////////////////////
+    //1. 何件ずつ表示させるか（固定。今回は10件ずつ）
+    $rows = 10;
+
+    //2. 現在表示しているページ数（GETで取得。初回など送られてこなければ1を設定する）
+    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+    //3. 表示するページに応じたレコード取得開始位置（2ページ目は、10件目から表示なので、10*(2-1)で$offset=10）
+    $offset = $rows * ($page - 1);
+
+    //4. 全件のレコード数。
+    //変数の割当が必要無いのでqueryで実行し、fetchColumn()で取得したcountを返す。
+    $all_rows = $dbh->query('SELECT COUNT(*) FROM contacts')->fetchColumn();
+
+    //5.  全件を10件ずつ表示させた場合のページ数。全件÷表示件数をして、0以下の場合は、ページ数は1に固定。
+    if (($all_rows % $rows) <= 0) {
+        $pages = (int) ($all_rows / $rows);
     } else {
-        $stmt = $dbh->prepare('SELECT * FROM contacts WHERE name like :keyword');
-        $stmt->bindValue(':keyword', '%'.$keyword.'%');
+        $pages = (int) ($all_rows / $rows) + 1;
     }
+
+    //6.  次のページ数（基本的に現在ページ+1。現在ページ+1が全ページ数より大きくなってしまうとページが無いのでその場合は''とする）
+    $next = ($page + 1 > $pages) ? '' : $page + 1;
+
+    //7.  一つ前のページ数（基本的に現在ページ-1。現在ページ-1が0になってしまうとページが無いのでその場合は''とする）
+    $prev = ($page - 1 <= 0) ? '' : $page - 1;
+    //ページング設定ここまで///////////////////////////////////////
+
+    $stmt = $dbh->prepare('SELECT * FROM contacts limit :offset,:rows');
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindParam(':rows', $rows, PDO::PARAM_INT);
     $stmt->execute();
     //結果を$contactsに格納
     $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -72,6 +98,17 @@
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <ul class="paging">
+                    <li><a href="index.php">« 最初</a></li>
+                    <?php if ($prev != ''): ?>
+                        <li><a href="index.php?page=<?php echo $prev; ?>"><?php echo $page - 1; ?></a></li>
+                    <?php endif; ?>
+                    <li><span><?php echo $page; ?></span></li>
+                    <?php if ($next != ''):  ?>
+                        <li><a href="index.php?page=<?php echo $next; ?>"><?php echo $page + 1; ?></a></li>
+                    <?php endif; ?>
+                    <li><a href="index.php?page=<?php echo $pages; ?>">最後 »</a></li>
+                </ul>
                 </div>
             </section>
         </main>

@@ -205,3 +205,29 @@ input.error {
 .search button {
     padding: 5px 10px;
 }
+
+
+/*paging*/
+.paging {
+    width:80%;
+    margin: 10px auto;
+    padding: 10px 10px 5px;
+    /* text-align: right; */
+}
+
+.paging li {
+    display: inline;
+    margin: 0 1px;
+}
+
+.paging a,
+.paging span {
+    color: #4c586f;
+    padding: 5px 8px;
+}
+
+.paging span {
+    background-color: #4c586f;
+    border-radius: 5px;
+    color: #fff;
+} 
