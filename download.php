@@ -41,5 +41,11 @@
     //ファイルを閉じる
     fclose($fp);
 
+    //ログ
+    $admin_name = $_SESSION['admin_name'];
+    $fp = fopen('log.txt', 'a');
+    fwrite($fp, date('Y-m-d H:i:s').": CSV downloaded.(by $admin_name)\n");
+    fclose($fp);
+
     //作成したcsvにアクセス（DL）
     header('Location:contacts.csv');

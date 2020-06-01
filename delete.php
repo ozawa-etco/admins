@@ -19,4 +19,10 @@
     $stmt->bindParam(':id', $id);
     $stmt->execute();
 
+    //ログ
+    $admin_name = $_SESSION['admin_name'];
+    $fp = fopen('log.txt', 'a');
+    fwrite($fp, date('Y-m-d H:i:s').": ID:$id was deleted.(by $admin_name)\n");
+    fclose($fp);
+
     header('location:index.php');

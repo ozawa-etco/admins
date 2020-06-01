@@ -19,12 +19,21 @@
     //2. 現在表示しているページ数（GETで取得。初回など送られてこなければ1を設定する）
     $page = isset($_GET['page']) ? $_GET['page'] : 1;
 
-    //3. 表示するページに応じたレコード取得開始位置（2ページ目は、10件目から表示なので、10*(2-1)で$offset=10）
+    //3. 表示するページに応じたレコード取得開始位置（2ページ目の場合は、10件目から表示なので、10*(2-1)で$offset=10）
     $offset = $rows * ($page - 1);
 
     //4. 全件のレコード数。
-    //変数の割当が必要無いのでqueryで実行し、fetchColumn()で取得したcountを返す。
-    $all_rows = $dbh->query('SELECT COUNT(*) FROM contacts')->fetchColumn();
+    if ($keyword == '') {
+        //queryで実行し、fetchColumn()で取得したcountを返す。
+        $all_rows = $dbh->query('SELECT COUNT(*) FROM contacts')->fetchColumn();
+    } else {
+        //検索条件を考慮
+        $all_rows_stmt = $dbh->prepare('SELECT * FROM contacts WHERE name like :keyword');
+        $all_rows_stmt->bindValue(':keyword', '%'.$keyword.'%');
+        $all_rows_stmt->execute();
+        //取得したcountを返す。
+        $all_rows = $all_rows_stmt->rowCount();
+    }
 
     //5.  全件を10件ずつ表示させた場合のページ数。全件÷表示件数をして、0以下の場合は、ページ数は1に固定。
     if (($all_rows % $rows) <= 0) {
@@ -40,7 +49,15 @@
     $prev = ($page - 1 <= 0) ? '' : $page - 1;
     //ページング設定ここまで///////////////////////////////////////
 
-    $stmt = $dbh->prepare('SELECT * FROM contacts limit :offset,:rows');
+    if ($keyword == '') {
+        //queryで実行し、fetchColumn()で取得したcountを返す。
+        $stmt = $dbh->prepare('SELECT * FROM contacts limit :offset,:rows');
+    } else {
+        //検索条件を考慮
+        $stmt = $dbh->prepare('SELECT * FROM contacts WHERE name like :keyword limit :offset,:rows');
+        $stmt->bindValue(':keyword', '%'.$keyword.'%');
+    }
+
     $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt->bindParam(':rows', $rows, PDO::PARAM_INT);
     $stmt->execute();
@@ -99,15 +116,15 @@
                     </tbody>
                 </table>
                 <ul class="paging">
-                    <li><a href="index.php">« 最初</a></li>
+                    <li><a href="index.php?keyword=<?php echo $keyword; ?>">« 最初</a></li>
                     <?php if ($prev != ''): ?>
-                        <li><a href="index.php?page=<?php echo $prev; ?>"><?php echo $page - 1; ?></a></li>
+                        <li><a href="index.php?page=<?php echo $prev; ?>&keyword=<?php echo $keyword; ?>"><?php echo $page - 1; ?></a></li>
                     <?php endif; ?>
                     <li><span><?php echo $page; ?></span></li>
                     <?php if ($next != ''):  ?>
-                        <li><a href="index.php?page=<?php echo $next; ?>"><?php echo $page + 1; ?></a></li>
+                        <li><a href="index.php?page=<?php echo $next; ?>&keyword=<?php echo $keyword; ?>"><?php echo $page + 1; ?></a></li>
                     <?php endif; ?>
-                    <li><a href="index.php?page=<?php echo $pages; ?>">最後 »</a></li>
+                    <li><a href="index.php?page=<?php echo $pages; ?>&keyword=<?php echo $keyword; ?>">最後 »</a></li>
                 </ul>
                 </div>
             </section>

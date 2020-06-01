@@ -138,7 +138,7 @@
 
             //ボタンのdisabled制御
             const checkSuccess = () => {
-                if (name.value && email.value && document.querySelector("input:checked[name=gender]")) {
+                if (name.value && email.value && document.querySelector("input:checked[name=gender]")&&message.value) {
                     if (name.getAttribute("class").includes("success") 
                         && email.getAttribute("class").includes("success") 
                         && message.getAttribute("class").includes("success")

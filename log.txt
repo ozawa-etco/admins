@@ -1,0 +1,6 @@
+2020-06-01 07:21:53: test was Logged in.
+2020-06-01 07:22:10: ID:114 was created.(by test)
+2020-06-01 07:22:22: ID:114 was edited.(by test)
+2020-06-01 07:22:33: ID:114 was deleted.(by test)
+2020-06-01 07:22:39: CSV downloaded.(by test)
+2020-06-01 07:22:45: logout!(test)

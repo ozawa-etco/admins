@@ -1,5 +1,11 @@
 <?php
 
+    session_start();
+    if ($_SESSION['admin_login'] == false) {
+        header('Location:login.php');
+        exit;
+    }
+
     $name = isset($_POST['name']) ? htmlspecialchars($_POST['name'], ENT_QUOTES, 'utf-8') : '';
     $email = isset($_POST['email']) ? htmlspecialchars($_POST['email'], ENT_QUOTES, 'utf-8') : '';
     $gender = isset($_POST['gender']) ? htmlspecialchars($_POST['gender'], ENT_QUOTES, 'utf-8') : '';
@@ -28,5 +34,12 @@
     $stmt->bindParam(':message', $message);
     //insertを実行
     $stmt->execute();
+
+    //ログ
+    $last_id = $dbh->lastInsertId();
+    $admin_name = $_SESSION['admin_name'];
+    $fp = fopen('log.txt', 'a');
+    fwrite($fp, date('Y-m-d H:i:s').": ID:$last_id was created.(by $admin_name)\n");
+    fclose($fp);
 
     header('Location:index.php');

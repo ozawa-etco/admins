@@ -36,4 +36,10 @@
     //insertを実行
     $stmt->execute();
 
+    //ログ
+    $admin_name = $_SESSION['admin_name'];
+    $fp = fopen('log.txt', 'a');
+    fwrite($fp, date('Y-m-d H:i:s').": ID:$id was edited.(by $admin_name)\n");
+    fclose($fp);
+
     header('Location:index.php');
