@@ -48,4 +48,5 @@
     fclose($fp);
 
     //作成したcsvにアクセス（DL）
-    header('Location:contacts.csv');
+    header('Content-Disposition: attachment; filename=contents.csv');
+    readfile('contacts.csv');
