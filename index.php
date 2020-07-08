@@ -36,10 +36,10 @@
     }
 
     //5.  全件を10件ずつ表示させた場合のページ数。全件÷表示件数をして、0以下の場合は、ページ数は1に固定。
-    if (($all_rows % $rows) <= 0) {
-        $pages = (int) ($all_rows / $rows);
+    if ((int) ($all_rows / $rows) <= 0) {
+        $pages = 1;
     } else {
-        $pages = (int) ($all_rows / $rows) + 1;
+        $pages = ceil($all_rows / $rows);
     }
 
     //6.  次のページ数（基本的に現在ページ+1。現在ページ+1が全ページ数より大きくなってしまうとページが無いのでその場合は''とする）
